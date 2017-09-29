@@ -1,0 +1,7 @@
+{
+  "utterance": "Volume down",
+  "intent_type": "VolumeDownIntent",
+  "intent": {
+    "VolumeDownKeyword": "volume down"
+  }
+}
