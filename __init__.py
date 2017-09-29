@@ -93,7 +93,7 @@ class HomeAssistantClient(object):
 class HomeAssistantSkill2(MycroftSkill):
 
     def __init__(self):
-        super(HomeAssistantSkill, self).__init__(name="HomeAssistantSkill2")
+        super(HomeAssistantSkill2, self).__init__(name="HomeAssistantSkill2")
         self.ha = HomeAssistantClient(self.config.get('host'),
             self.config.get('password'), ssl=self.config.get('ssl', False))
 
