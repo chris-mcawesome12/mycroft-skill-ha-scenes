@@ -16,6 +16,7 @@ LOGGER = getLogger(__name__)
 class HomeAssistantClient(object):
     def __init__(self, host, password, portnum, ssl=False):
         self.ssl = ssl
+         self.verify = verify
         if self.ssl:
             portnum
             self.url = "https://%s:%d" % (host, portnum)
@@ -67,23 +68,30 @@ class HomeAssistantClient(object):
         if req.status_code == 200:
             for attr in req.json():
                 if attr['entity_id'] == entity:
-                    try:
-                        unit_measur = attr['attributes']['unit_of_measurement']
-                        sensor_name = attr['attributes']['friendly_name']
+                    entity_attrs = attr['attributes']
+                    if attr['entity_id'].startswith('light.'):
+                        unit_measur = entity_attrs['brightness']
+                        sensor_name = entity_attrs['friendly_name']
                         sensor_state = attr['state']
                         return unit_measur, sensor_name, sensor_state
-                    except BaseException:
-                        unit_measur = 'null'
-                        sensor_name = attr['attributes']['friendly_name']
-                        sensor_state = attr['state']
-                        return unit_measur, sensor_name, sensor_state
-
+                    else:
+                        try:
+                            unit_measur = entity_attrs['unit_of_measurement']
+                            sensor_name = entity_attrs['friendly_name']
+                            sensor_state = attr['state']
+                            return unit_measur, sensor_name, sensor_state
+                        except BaseException:
+                            unit_measur = 'null'
+                            sensor_name = entity_attrs['friendly_name']
+                            sensor_state = attr['state']
+                            return unit_measur, sensor_name, sensor_state
         return None
 
     def execute_service(self, domain, service, data):
         if self.ssl:
             post("%s/api/services/%s/%s" % (self.url, domain, service),
-                 headers=self.headers, data=json.dumps(data), verify=True)
+                 headers=self.headers, data=json.dumps(data),
+                 verify=self.verify)
         else:
             post("%s/api/services/%s/%s" % (self.url, domain, service),
                  headers=self.headers, data=json.dumps(data))
