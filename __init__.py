@@ -102,9 +102,13 @@ class HomeAssistantSkill2(MycroftSkill):
 
     def __init__(self):
         super(HomeAssistantSkill2, self).__init__(name="HomeAssistantSkill2")
-        self.ha = HomeAssistantClient(self.config.get('host'),
-            self.config.get('password'), ssl=self.config.get('ssl', False))
-
+        self.ha = HomeAssistantClient(
+            self.config.get('host'),
+            self.config.get('password'),
+            self.config.get('portnum'),
+            ssl=self.config.get('ssl', False),
+            verify=self.config.get('verify', True)
+            )
     def initialize(self):
         intent = IntentBuilder("LightingIntent").require("VolumeUpKeyword").build()
         self.register_intent(intent, self.handle_volume_intent)
