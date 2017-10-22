@@ -12,11 +12,9 @@ import json
 __author__ = 'robconnolly, btotharye'
 LOGGER = getLogger(__name__)
 
-
 class HomeAssistantClient(object):
     def __init__(self, host, password, portnum, ssl=False):
         self.ssl = ssl
-        self.verify = verify
         if self.ssl:
             portnum
             self.url = "https://%s:%d" % (host, portnum)
@@ -102,24 +100,56 @@ class HomeAssistantSkill2(MycroftSkill):
 
     def __init__(self):
         super(HomeAssistantSkill2, self).__init__(name="HomeAssistantSkill2")
-        self.ha = HomeAssistantClient(
-            self.config.get('host'),
-            self.config.get('password'),
-            self.config.get('portnum'),
-            ssl=self.config.get('ssl', False),
-            verify=self.config.get('verify', True)
-            )
+        self.ha = HomeAssistantClient(self.config.get('host'),
+            self.config.get('password'), self.config.get('portnum') ,ssl=self.config.get('ssl', False))
+
     def initialize(self):
-        intent = IntentBuilder("LightingIntent").require("VolumeUpKeyword").build()
-        self.register_intent(intent, self.handle_volume_intent)
+        movietime_intent = IntentBuilder("MovieTimeIntent").require("MovieTimeKeyword").build()
+        self.register_intent(movietime_intent, self.handle_movietime_intent)
 
-    def handle_volume_intent(self, message):
-        self.speak('volume tunred up')
-        self.ha.execute_service("homeassistant", "turn_on", "scene.volume_up")
+        bedtime_intent = IntentBuilder("BedTimeIntent").require("BedTimeKeyword").build()
+        self.register_intent(bedtime_intent, self.handle_bedtime_intent)
 
+		todo_list_intent = IntentBuilder("TodoListIntent").require("TodoListKeyword").build()
+        self.register_intent(todo_list_intent, self.handle_todo_list_intent)
+		
+		movie_list_intent = IntentBuilder("TodoListIntent").require("MovieListKeyword").build()
+        self.register_intent(movie_list_intent, self.handle_todo_list_intent)
+		
+    def handle_movietime_intent(self, message):
+	    entity = 'movie_time'
+	    LOGGER.debug("Entity: %s" % entity)
+	    ha_entity = self.ha.find_entity(entity, ['scene'])
+	    ha_data = {'entity_id': ha_entity['id']}        
+	    self.speak('enjouy the show')
+	    self.ha.execute_service("homeassistant", "turn_on", ha_data)
+
+    def handle_bedtime_intent(self, message):
+        entity = 'bed_time'
+        LOGGER.debug("Entity: %s" % entity)
+        ha_entity = self.ha.find_entity(entity, ['scene'])
+        ha_data = {'entity_id': ha_entity['id']}
+        self.speak('have a good sleep')
+        self.ha.execute_service("homeassistant", "turn_on", ha_data)
+		
+    def handle_todo_list_intent(self, message):
+        entity = 'to_do_list'
+        LOGGER.debug("Entity: %s" % entity)
+        ha_entity = self.ha.find_entity(entity, ['scene'])
+        ha_data = {'entity_id': ha_entity['id']}
+        self.ha.execute_service("homeassistant", "turn_on", ha_data)
+
+    def handle_movie_list_intent(self, message):
+        entity = 'movie_watch_script'
+        LOGGER.debug("Entity: %s" % entity)
+        ha_entity = self.ha.find_entity(entity, ['scene'])
+        ha_data = {'entity_id': ha_entity['id']}
+        self.ha.execute_service("homeassistant", "turn_on", ha_data)
+		
     def stop(self):
         pass
 
 
 def create_skill():
     return HomeAssistantSkill2()
+
