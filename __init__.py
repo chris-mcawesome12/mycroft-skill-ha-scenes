@@ -110,11 +110,11 @@ class HomeAssistantSkill2(MycroftSkill):
         bedtime_intent = IntentBuilder("BedTimeIntent").require("BedTimeKeyword").build()
         self.register_intent(bedtime_intent, self.handle_bedtime_intent)
 
-		todo_list_intent = IntentBuilder("TodoListIntent").require("TodoListKeyword").build()
+	todo_list_intent = IntentBuilder("TodoListIntent").require("TodoListKeyword").build()
         self.register_intent(todo_list_intent, self.handle_todo_list_intent)
 		
-		movie_list_intent = IntentBuilder("TodoListIntent").require("MovieListKeyword").build()
-        self.register_intent(movie_list_intent, self.handle_todo_list_intent)
+	movie_list_intent = IntentBuilder("MovieListIntent").require("MovieListKeyword").build()
+        self.register_intent(movie_list_intent, self.handle_movie_list_intent)
 		
     def handle_movietime_intent(self, message):
 	    entity = 'movie_time'
