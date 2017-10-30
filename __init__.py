@@ -118,7 +118,7 @@ class HomeAssistantSkill2(MycroftSkill):
 
 	## add to home assistant
 
-	spotify_stop_intent = IntentBuilder("StopSpotifyIntent").require("StopSpotifyKeyword").build()
+	stop_spotify_intent = IntentBuilder("StopSpotifyIntent").require("StopSpotifyKeyword").build()
         self.register_intent(stop_spotify_intent, self.handle_stop_spotify_intent)
 		
 	next_song_intent = IntentBuilder("NextSongIntent").require("NextSongKeyword").build()
