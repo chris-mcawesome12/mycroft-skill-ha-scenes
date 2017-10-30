@@ -209,7 +209,7 @@ class HomeAssistantSkill2(MycroftSkill):
         ha_entity = self.ha.find_entity(entity, ['scene'])
         ha_data = {'entity_id': ha_entity['id']}
         self.ha.execute_service("homeassistant", "turn_on", ha_data)
-		self.speak('see you when you get back')
+	self.speak('see you when you get back')
 		
     def stop(self):
         pass
