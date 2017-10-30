@@ -133,7 +133,7 @@ class HomeAssistantSkill2(MycroftSkill):
 	volume_low_intent = IntentBuilder("VolumeLowIntent").require("VolumeLowKeyword").build()
         self.register_intent(volume_low_intent, self.handle_volume_low_intent)
 
-	going out_intent = IntentBuilder("GoingOutIntent").require("GoingOutKeyword").build()
+	going_out_intent = IntentBuilder("GoingOutIntent").require("GoingOutKeyword").build()
         self.register_intent(going_out_intent, self.handle_going_out_intent)
 		
     def handle_movietime_intent(self, message):
