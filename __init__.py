@@ -110,18 +110,38 @@ class HomeAssistantSkill2(MycroftSkill):
         bedtime_intent = IntentBuilder("BedTimeIntent").require("BedTimeKeyword").build()
         self.register_intent(bedtime_intent, self.handle_bedtime_intent)
 
-	todo_list_intent = IntentBuilder("TodoListIntent").require("TodoListKeyword").build()
+		todo_list_intent = IntentBuilder("TodoListIntent").require("TodoListKeyword").build()
         self.register_intent(todo_list_intent, self.handle_todo_list_intent)
 		
-	movie_list_intent = IntentBuilder("MovieListIntent").require("MovieListKeyword").build()
+		movie_list_intent = IntentBuilder("MovieListIntent").require("MovieListKeyword").build()
         self.register_intent(movie_list_intent, self.handle_movie_list_intent)
+
+		## add to home assistant
+
+		spotify_stop_intent = IntentBuilder("StopSpotifyIntent").require("StopSpotifyKeyword").build()
+        self.register_intent(stop_spotify_intent, self.handle_stop_spotify_intent)
+		
+		next_song_intent = IntentBuilder("NextSongIntent").require("NextSongKeyword").build()
+        self.register_intent(next_song_intent, self.handle_next_song_intent)
+		
+		volume_high_intent = IntentBuilder("VolumeHighIntent").require("VolumeHighKeyword").build()
+        self.register_intent(volume_high_intent, self.handle_volume_high_intent)
+
+		volume_mid_intent = IntentBuilder("VolumeMidIntent").require("VolumeMidKeyword").build()
+        self.register_intent(volume_mid_intent, self.handle_volume_mid_intent)
+
+		volume_low_intent = IntentBuilder("VolumeLowIntent").require("VolumeLowKeyword").build()
+        self.register_intent(volume_low_intent, self.handle_volume_low_intent)
+
+		going out_intent = IntentBuilder("GoingOutIntent").require("GoingOutKeyword").build()
+        self.register_intent(going_out_intent, self.handle_going_out_intent)
 		
     def handle_movietime_intent(self, message):
 	    entity = 'movie_time'
 	    LOGGER.debug("Entity: %s" % entity)
 	    ha_entity = self.ha.find_entity(entity, ['scene'])
 	    ha_data = {'entity_id': ha_entity['id']}        
-	    self.speak('enjouy the show')
+	    self.speak('enjoy the show')
 	    self.ha.execute_service("homeassistant", "turn_on", ha_data)
 
     def handle_bedtime_intent(self, message):
@@ -136,6 +156,7 @@ class HomeAssistantSkill2(MycroftSkill):
         entity = 'to_do_list'
         LOGGER.debug("Entity: %s" % entity)
         ha_entity = self.ha.find_entity(entity, ['scene'])
+		self.speak('have a good sleep')
         ha_data = {'entity_id': ha_entity['id']}
         self.ha.execute_service("homeassistant", "turn_on", ha_data)
 
@@ -145,6 +166,50 @@ class HomeAssistantSkill2(MycroftSkill):
         ha_entity = self.ha.find_entity(entity, ['scene'])
         ha_data = {'entity_id': ha_entity['id']}
         self.ha.execute_service("homeassistant", "turn_on", ha_data)
+
+	### add to home assistant 
+    def handle_stop_spotify_intent(self, message):
+        entity = 'stop_spotify'
+        LOGGER.debug("Entity: %s" % entity)
+        ha_entity = self.ha.find_entity(entity, ['scene'])
+        ha_data = {'entity_id': ha_entity['id']}
+        self.ha.execute_service("homeassistant", "turn_on", ha_data)
+
+    def handle_next_song_intent(self, message):
+        entity = 'next_song'
+        LOGGER.debug("Entity: %s" % entity)
+        ha_entity = self.ha.find_entity(entity, ['scene'])
+        ha_data = {'entity_id': ha_entity['id']}
+        self.ha.execute_service("homeassistant", "turn_on", ha_data)
+
+    def volume_high_intent(self, message):
+        entity = 'volume_high'
+        LOGGER.debug("Entity: %s" % entity)
+        ha_entity = self.ha.find_entity(entity, ['scene'])
+        ha_data = {'entity_id': ha_entity['id']}
+        self.ha.execute_service("homeassistant", "turn_on", ha_data)
+
+    def volume_mid_intent(self, message):
+        entity = 'volume_medium'
+        LOGGER.debug("Entity: %s" % entity)
+        ha_entity = self.ha.find_entity(entity, ['scene'])
+        ha_data = {'entity_id': ha_entity['id']}
+        self.ha.execute_service("homeassistant", "turn_on", ha_data)
+
+    def volume_low_intent(self, message):
+        entity = 'volume_low'
+        LOGGER.debug("Entity: %s" % entity)
+        ha_entity = self.ha.find_entity(entity, ['scene'])
+        ha_data = {'entity_id': ha_entity['id']}
+        self.ha.execute_service("homeassistant", "turn_on", ha_data)
+
+    def going_out_intent(self, message):
+        entity = 'going_out'
+        LOGGER.debug("Entity: %s" % entity)
+        ha_entity = self.ha.find_entity(entity, ['scene'])
+        ha_data = {'entity_id': ha_entity['id']}
+        self.ha.execute_service("homeassistant", "turn_on", ha_data)
+		self.speak('see you when you get back')
 		
     def stop(self):
         pass
@@ -152,4 +217,3 @@ class HomeAssistantSkill2(MycroftSkill):
 
 def create_skill():
     return HomeAssistantSkill2()
-
