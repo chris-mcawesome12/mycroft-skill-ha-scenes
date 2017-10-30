@@ -182,28 +182,28 @@ class HomeAssistantSkill2(MycroftSkill):
         ha_data = {'entity_id': ha_entity['id']}
         self.ha.execute_service("homeassistant", "turn_on", ha_data)
 
-    def volume_high_intent(self, message):
+    def handle_volume_high_intent(self, message):
         entity = 'volume_high'
         LOGGER.debug("Entity: %s" % entity)
         ha_entity = self.ha.find_entity(entity, ['scene'])
         ha_data = {'entity_id': ha_entity['id']}
         self.ha.execute_service("homeassistant", "turn_on", ha_data)
 
-    def volume_mid_intent(self, message):
+    def handle_volume_mid_intent(self, message):
         entity = 'volume_medium'
         LOGGER.debug("Entity: %s" % entity)
         ha_entity = self.ha.find_entity(entity, ['scene'])
         ha_data = {'entity_id': ha_entity['id']}
         self.ha.execute_service("homeassistant", "turn_on", ha_data)
 
-    def volume_low_intent(self, message):
+    def handle_volume_low_intent(self, message):
         entity = 'volume_low'
         LOGGER.debug("Entity: %s" % entity)
         ha_entity = self.ha.find_entity(entity, ['scene'])
         ha_data = {'entity_id': ha_entity['id']}
         self.ha.execute_service("homeassistant", "turn_on", ha_data)
 
-    def going_out_intent(self, message):
+    def handle_going_out_intent(self, message):
         entity = 'going_out'
         LOGGER.debug("Entity: %s" % entity)
         ha_entity = self.ha.find_entity(entity, ['scene'])
